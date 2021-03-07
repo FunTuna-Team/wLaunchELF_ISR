@@ -62,7 +62,6 @@ jobs:
         destination_folder: '__Binaries'
         user_email: '${{ secrets.EM }}'
         user_name: 'israpps'
-        commit_message: 'update uLaunchELF'
 
 
     
