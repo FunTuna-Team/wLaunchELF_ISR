@@ -28,13 +28,6 @@ jobs:
     - name: Compile wLaunchELF
       run: |
         make
-    - name: make lang package and english elf package
-      run: |
-       cd Lang
-       zip  Lang.zip *.LNG
-       cd ..
-       HASH=${GITHUB_SHA::7}
-       zip "wLaunchELF ENG[$HASH].zip" *.ELF
 
     - name: Get short SHA
       id: slug
@@ -46,8 +39,7 @@ jobs:
       with:
         name: wLaunchELF-${{ steps.slug.outputs.sha8 }}
         path: |
-              *.zip
-              Lang/Lang.zip
+              *.ELF
 
     - name: Create release
       if: github.ref == 'refs/heads/master'
@@ -57,5 +49,20 @@ jobs:
         automatic_release_tag: "latest"
         title: "Latest automated build"
         files: |
-               *.zip
-               Lang/Lang.zip
+               *.ELF
+
+    - name: Deploy file into FunTuna Fork binaries
+      if: github.ref == 'refs/heads/FunTuna-Fork'
+      uses: dmnemec/copy_file_to_another_repo_action@v1.0.4
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+      with:
+        source_file: 'ULE.ELF'
+        destination_repo: 'israpps/Funtuna-Fork'
+        destination_folder: '__Binaries'
+        user_email: '${{ secrets.EM }}'
+        user_name: 'israpps'
+        commit_message: 'update uLaunchELF'
+
+
+    
