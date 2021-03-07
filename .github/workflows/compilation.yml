@@ -51,17 +51,6 @@ jobs:
         files: |
                *.ELF
 
-    - name: Deploy file into FunTuna Fork binaries
-      if: github.ref == 'refs/heads/FunTuna-Fork'
-      uses: dmnemec/copy_file_to_another_repo_action@v1.0.4
-      env:
-        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
-      with:
-        source_file: 'ULE.ELF'
-        destination_repo: 'israpps/Funtuna-Fork'
-        destination_folder: '__Binaries'
-        user_email: '${{ secrets.EM }}'
-        user_name: 'israpps'
 
 
     
