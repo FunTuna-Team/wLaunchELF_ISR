@@ -1737,6 +1737,7 @@ u64 getFileSize(const char *path, const FILEINFO *file)
 //_msg0 = pointer to msg0 to report what happened to the user (uLaunchELF only)
 void time_manip(const char *path, const FILEINFO *file, char **_msg0)
 {
+	char* text;
 	int rett;  //this var will be used to store the result of mcSetFileInfo()
 	int slot;
 	slot = path[2] - '0';
@@ -1763,6 +1764,14 @@ void time_manip(const char *path, const FILEINFO *file, char **_msg0)
 	if (rett < 0)
 		sprintf(_msg0, "error [%d], folder[%s]  Mc Slot=[%d] .", rett, file->name, slot);
 	mcSync(0, NULL, &rett);
+		
+		fd = genOpen("mass:/log.ini", O_CREAT | O_WRONLY | O_TRUNC);
+	sprintf(text, "path:%s;\nname:%s;\nslot:%d;\n",path ,file->name ,slot);
+	if (fd >= 0) {
+		genWrite(fd, text, strlen(text));
+		genClose(fd);
+	}
+
 }  // TIMEMANIP
 //------------------------------
 //endfunc time_manip
