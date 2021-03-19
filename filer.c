@@ -1740,6 +1740,7 @@ void time_manip(const char *path, const FILEINFO *file, char **_msg0)
 	char* text;
 	int rett;  //this var will be used to store the result of mcSetFileInfo()
 	int slot;
+	int fd;
 	slot = path[2] - '0';
 #define ARRAY_ENTRIES 64
 	static sceMcTblGetDir mcDirAAA[ARRAY_ENTRIES] __attribute__((aligned(64)));  // save file properties
