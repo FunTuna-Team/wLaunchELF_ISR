@@ -15,6 +15,8 @@ ifeq ($(SMB),1)
 	EE_OBJS += smbman.o
 endif
 
+
+
 EE_INCS := -I$(PS2DEV)/gsKit/include -I$(PS2SDK)/ports/include -Ioldlibs/libcdvd/ee
 
 EE_LDFLAGS := -L$(PS2DEV)/gsKit/lib -L$(PS2SDK)/ports/lib -Loldlibs/libcdvd/lib -s
@@ -25,6 +27,16 @@ EE_CFLAGS := -mgpopt -G10240
 ifeq ($(SMB),1)
 	EE_CFLAGS += -DSMB
 endif
+
+
+ifeq ($(LANG),SPA)
+	EE_CFLAGS += -DLANG_SPA
+endif
+ifeq ($(LANG),ENG)
+	EE_CFLAGS += -DLANG_ENG
+endif
+
+
 
 .PHONY: all run reset clean rebuild
 
