@@ -299,8 +299,8 @@ static void Show_About_uLE(void)
 			PrintPos(03, hpos, TextRow);
 			sprintf(TextRow, " commit: %s (based on commit 41e4ebe)", GIT_HASH);
 			PrintPos(04, hpos, TextRow);
-			PrintPos(05, hpos, "Project maintainers:");
-			PrintPos(-1, hpos, "  sp193 & AKuHAK");
+			PrintPos(05, hpos, "Mod created by: Matias Israelson");
+			PrintPos(-1, hpos, "Project maintainers:  sp193 & AKuHAK");
 			PrintPos(-1, hpos, "  ");
 			PrintPos(-1, hpos, "uLaunchELF Project maintainers:");
 			PrintPos(-1, hpos, "  Eric Price       (aka: 'E P')");
