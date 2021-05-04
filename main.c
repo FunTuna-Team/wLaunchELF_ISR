@@ -1641,7 +1641,7 @@ int IsSupportedFileType(char *path)
 	if (strchr(path, ':') != NULL) {
 		if (genCmpFileExt(path, "ELF")) {
 			return (checkELFheader(path) >= 0);
-		} else if ( (genCmpFileExt(path, "CFG") || genCmpFileExt(path, "CHT") || genCmpFileExt(path, "INI") || genCmpFileExt(path, "CNF") || genCmpFileExt(path, "TXT") ||  ) || (genCmpFileExt(path, "JPG") || genCmpFileExt(path, "JPEG"))) {
+		} else if ( (genCmpFileExt(path, "CFG") || genCmpFileExt(path, "CHT") || genCmpFileExt(path, "INI") || genCmpFileExt(path, "CNF") || genCmpFileExt(path, "TXT")  ) || (genCmpFileExt(path, "JPG") || genCmpFileExt(path, "JPEG"))) {
 			return 1;
 		} else
 			return 0;
