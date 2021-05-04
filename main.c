@@ -297,28 +297,28 @@ static void Show_About_uLE(void)
 			clrScr(setting->color[COLOR_BACKGR]);
 			sprintf(TextRow, "About wLaunchELF %s  %s", ULE_VERSION, ULE_VERDATE);
 			PrintPos(03, hpos, TextRow);
-			sprintf(TextRow, "                         commit: %s", GIT_HASH);
+			sprintf(TextRow, " commit: %s (based on commit 41e4ebe)", GIT_HASH);
 			PrintPos(04, hpos, TextRow);
 			PrintPos(05, hpos, "Project maintainers:");
-			PrintPos(-1, hpos, "  sp193");
-			PrintPos(-1, hpos, "  AKuHAK");
-			PrintPos(-1, hpos, "");
+			PrintPos(-1, hpos, "  sp193 & AKuHAK");
+			PrintPos(-1, hpos, "  ");
 			PrintPos(-1, hpos, "uLaunchELF Project maintainers:");
 			PrintPos(-1, hpos, "  Eric Price       (aka: 'E P')");
 			PrintPos(-1, hpos, "  Ronald Andersson (aka: 'dlanor')");
-			PrintPos(-1, hpos, "");
+			PrintPos(-1, hpos, " ");
 			PrintPos(-1, hpos, "Other contributors:");
 			PrintPos(-1, hpos, "  Polo35, radad, Drakonite, sincro");
 			PrintPos(-1, hpos, "  kthu, Slam-Tilt, chip, pixel, Hermes");
 			PrintPos(-1, hpos, "  and others in the PS2Dev community");
-			PrintPos(-1, hpos, "");
+			PrintPos(-1, hpos, " ");
 			PrintPos(-1, hpos, "Main release site:");
 			PrintPos(-1, hpos, "  \"https://github.com/AKuHAK/uLaunchELF/releases\"");
-			PrintPos(-1, hpos, "");
+			PrintPos(-1, hpos, "  Mod Release site:");
+			PrintPos(-1, hpos, "	\"https://github.com/israpps/wLaunchELF_ISR/tree/41e43b3-mod\"");
 			PrintPos(-1, hpos, "Ancestral project: LaunchELF v3.41");
 			PrintPos(-1, hpos, "Created by:        Mirakichi");
 		}  //ends if(event||post_event)
-		drawScr();
+		drawScr();// https://github.com/israpps/wLaunchELF_ISR/tree/41e43b3-mod
 		post_event = event;
 		event = 0;
 	}  //ends while
@@ -1641,7 +1641,7 @@ int IsSupportedFileType(char *path)
 	if (strchr(path, ':') != NULL) {
 		if (genCmpFileExt(path, "ELF")) {
 			return (checkELFheader(path) >= 0);
-		} else if (genCmpFileExt(path, "TXT") || (genCmpFileExt(path, "JPG") || genCmpFileExt(path, "JPEG"))) {
+		} else if ( (genCmpFileExt(path, "CFG") || genCmpFileExt(path, "CHT") || genCmpFileExt(path, "INI") || genCmpFileExt(path, "CNF") || genCmpFileExt(path, "TXT") ||  ) || (genCmpFileExt(path, "JPG") || genCmpFileExt(path, "JPEG"))) {
 			return 1;
 		} else
 			return 0;
@@ -1874,7 +1874,7 @@ Recurse_for_ESR:  //Recurse here for PS2Disc command with ESR disc
 		LastDir[0] = 0;
 		getFilePath(tmp, FALSE);
 		if (tmp[0]) {
-			if (genCmpFileExt(tmp, "TXT")) {
+			if (genCmpFileExt(path, "CFG") || genCmpFileExt(path, "CHT") || genCmpFileExt(path, "CNF") || genCmpFileExt(path, "INI") || genCmpFileExt(tmp, "TXT")) {
 				if (setting->GUI_skin[0]) {
 					GUI_active = 0;
 					loadSkin(BACKGROUND_PIC, 0, 0);
