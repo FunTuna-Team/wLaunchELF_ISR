@@ -36,6 +36,14 @@ ifeq ($(LANG),ENG)
 	EE_CFLAGS += -DLANG_ENG
 endif
 
+ifeq ($(TMANIP),1)
+EE_CFLAGS += -DTMANIP
+endif
+
+ifeq ($(TMANIP),2)
+EE_CFLAGS += -DTMANIP
+EE_CFLAGS += -DTMANIP_MORON
+endif
 
 
 .PHONY: all run reset clean rebuild
