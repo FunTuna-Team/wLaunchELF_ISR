@@ -37,7 +37,7 @@ ifeq ($(LANG),ENG)
 endif
 
 ifeq ($(TMANIP),1)
- echo "#define TMANIP">>macro_vault.h
+ EE_CFLAGS += -DTMANIP
 endif
 
 ifeq ($(TMANIP),2)
