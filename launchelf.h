@@ -1,7 +1,7 @@
 #ifndef LAUNCHELF_H
 #define LAUNCHELF_H
 
-#include "macro_vault.h"
+
 #define HACK_FOLDER "BXEXEC-FUNTUNA"
 
 #define ULE_VERSION "v4.43x_isr"
