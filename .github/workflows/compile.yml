@@ -24,7 +24,7 @@ jobs:
         cd ps2eth && make clean all install
     - name: Compile wLaunchELF
       run: |
-        make
+        make TMANIP=1 
     - name: Get short SHA
       id: slug
       run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"

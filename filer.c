@@ -37,6 +37,9 @@ enum {
 	MOUNTVMC0,
 	MOUNTVMC1,
 	GETSIZE,
+	#ifdef TMANIP
+	TIMEMANIP,
+	#endif
 	NUM_MENU
 } R1_menu_enum;
 
@@ -1362,7 +1365,9 @@ int menu(const char *path, FILEINFO *file)
 	menu_len = strlen(LNG(mcPaste)) > menu_len ? strlen(LNG(mcPaste)) : menu_len;
 	menu_len = strlen(LNG(psuPaste)) > menu_len ? strlen(LNG(psuPaste)) : menu_len;
 	menu_len = (strlen(LNG(Mount)) + 6) > menu_len ? (strlen(LNG(Mount)) + 6) : menu_len;
-
+	#ifdef TMANIP
+	menu_len = strlen(LNG(time_manip)) > menu_len ? strlen(LNG(time_manip)) : menu_len;
+	#endif //TMANIP
 	int menu_ch_w = menu_len + 1;                                 //Total characters in longest menu string
 	int menu_ch_h = NUM_MENU;                                     //Total number of menu lines
 	int mSprite_Y1 = 64;                                          //Top edge of sprite
@@ -1389,6 +1394,18 @@ int menu(const char *path, FILEINFO *file)
 		enable[MOUNTVMC1] = FALSE;
 		enable[GETSIZE] = FALSE;
 	}
+#ifdef TMANIP
+	if (                                                        //if
+	    (file->stats.AttrFile & sceMcFileAttrSubdir) &&         //pointing to a folder
+	    (strcmp(file->name, "..")) &&                           //it isnt the ".." option
+	    ((!strcmp(path, "mc0:/")) || (!strcmp(path, "mc1:/")))  //we're on Memory card roots
+	) {
+		enable[TIMEMANIP] = TRUE;
+	} else {
+		enable[TIMEMANIP] = FALSE;
+	} 
+#endif //TMANIP
+
 
 	if (write_disabled || menu_disabled) {
 		enable[CUT] = FALSE;
@@ -1503,7 +1520,11 @@ int menu(const char *path, FILEINFO *file)
 					sprintf(tmp, "%s vmc1:", LNG(Mount));
 				else if (i == GETSIZE)
 					strcpy(tmp, LNG(Get_Size));
-
+				#ifdef TMANIP
+				else if (i == TIMEMANIP)
+					strcpy(tmp, LNG(time_manip));
+				#endif //TMANIP
+				
 				if (enable[i])
 					color = setting->color[COLOR_TEXT];
 				else
@@ -1711,6 +1732,58 @@ u64 getFileSize(const char *path, const FILEINFO *file)
 //------------------------------
 //endfunc getFileSize
 //--------------------------------------------------------------
+//
+//this function will allow you to force the date of any memory-card save file...
+//... into the highest date available for a ps2 (1 second before year 2100)
+// ----------=====args=====----------
+// path: mc0:/ or mc1:/
+// const FILEINFO *file = the FILEINFO struct for that save, however, this function only cares about folder name
+//_msg0 = pointer to msg0 to report what happened to the user (uLaunchELF only)
+#ifdef TMANIP
+	void time_manip(const char *path, const FILEINFO *file, char **_msg0)
+	{
+		int rett;  //this var will be used to store the result of mcSetFileInfo()
+		int slot;
+		slot = path[2] - '0';
+		#define ARRAY_ENTRIES 64
+		static sceMcTblGetDir mcDirAAA[ARRAY_ENTRIES] __attribute__((aligned(64)));  // save file properties
+		static sceMcStDateTime new_mtime;                                            //manipulated struct for savefile properties, this will be used to change the date of the save file properties
+																					//char *result,*end;
+																					/*=====================================================================================================*/
+		new_mtime.Resv2 = 0;
+		new_mtime.Sec = 59;
+		new_mtime.Min = 59;
+		new_mtime.Hour = 23;
+		new_mtime.Day = 31;
+		new_mtime.Month = 12;
+		new_mtime.Year = 2099;
+		mcDirAAA->_Modify = new_mtime;
+		mcDirAAA->_Create = new_mtime;
+		/*=====================================================================================================*/
+	
+	#ifdef TMANIP_MORON
+		rett = mcSetFileInfo(slot, 0, HACK_FOLDER, mcDirAAA, 0x02);
+		if (rett == 0)
+			sprintf(_msg0, "success, folder [%s]  Mc Slot [%d] .", HACK_FOLDER, slot);
+		if (rett < 0)
+			sprintf(_msg0, "error [%d], folder[%s]  Mc Slot=[%d] .", rett, HACK_FOLDER, slot);
+	#else
+		rett = mcSetFileInfo(slot, 0, file->name, mcDirAAA, 0x02);
+		if (rett == 0)
+			sprintf(_msg0, "success, folder [%s]  Mc Slot [%d] .", file->name, slot);
+		if (rett < 0)
+			sprintf(_msg0, "error [%d], folder[%s]  Mc Slot=[%d] .", rett, file->name, slot);
+	#endif //TMANIP_MORON
+	
+	
+	
+		mcSync(0, NULL, &rett);
+	}  // TIMEMANIP
+	//------------------------------
+	//endfunc time_manip
+	//--------------------------------------------------------------
+	//
+#endif //TMANIP
 int delete (const char *path, const FILEINFO *file)
 {
 	FILEINFO files[MAX_ENTRY];
@@ -3645,6 +3718,29 @@ int getFilePath(char *out, int cnfmode)
 					else if (ret == GETSIZE) {
 						submenu_func_GetSize(msg0, path, files);
 					}  //ends GETSIZE
+#ifdef TMANIP
+					else if (ret == TIMEMANIP) {
+#ifdef TMANIP_MORON
+						sprintf(msg1, "\n\n %s  [%s]  ?\n", LNG(change_timestamp_of), HACK_FOLDER);
+#else
+						sprintf(msg1, "\n\n %s  [%s]  ?\n", LNG(change_timestamp_of), files[browser_sel].name);
+#endif //TMANIP_MORON
+						if (ynDialog(msg1) > 0) {
+							time_manip(path, &files[browser_sel], &msg0);
+							browser_pushed = FALSE;
+							browser_repos = TRUE;  // TEST
+							browser_cd = TRUE;     //TEST
+						}
+					}
+#endif //TMANIP
+					
+					
+					
+					
+					
+					
+					
+					
 					   //R1 menu handling is completed above
 				} else if ((!swapKeys && new_pad & PAD_CROSS) || (swapKeys && new_pad & PAD_CIRCLE)) {
 					if (browser_sel != 0 && path[0] != 0 && strcmp(path, "hdd0:/")) {

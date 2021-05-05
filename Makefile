@@ -45,6 +45,11 @@ EE_CFLAGS += -DTMANIP
 EE_CFLAGS += -DTMANIP_MORON
 endif
 
+ifeq ($(DEFAULT_COLORS),1)
+EE_CFLAGS += -DDEFAULT_COLORS
+else
+EE_CFLAGS += -DCUSTOM_COLORS
+endif
 
 .PHONY: all run reset clean rebuild
 
@@ -66,6 +71,11 @@ githash.h:
 	git rev-parse --short HEAD | tr -d "\n" >> $@ && \
 	printf '"\n#endif\n' >> $@
 
+current_flags:
+	@echo "SMB: set to 1 to build wLe with smb support"
+	@echo "DEFAULT_COLORS - set to 1 to use default uLaunchELF colors, otherwise, custom values will be used"
+	@echo "TMANIP: set to 1 to compile with time manipulation function, if set to 2 the function will manipulate the date of a specific folder (to avoid issues caused by noobs) (the specific folder name used is the macro HACK_FOLDER, wich is defined at launchelf.h)"
+	@echo "LANG: use a custom language file to compile wLe (by now only SPA and ENG are available)"
 mcman_irx.s: $(PS2SDK)/iop/irx/mcman.irx
 	bin2s $< $@ mcman_irx
 
