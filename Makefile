@@ -37,12 +37,13 @@ ifeq ($(LANG),ENG)
 endif
 
 ifeq ($(TMANIP),1)
-echo "#define TMANIP">>macro_vault.h
+ echo "#define TMANIP">>macro_vault.h
 endif
 
 ifeq ($(TMANIP),2)
-EE_CFLAGS += -DTMANIP
-echo "#define TMANIP_MORON">>macro_vault.h
+ EE_CFLAGS += -DTMANIP
+
+ echo "#define TMANIP_MORON">>macro_vault.h
 endif
 
 ifeq ($(DEFAULT_COLORS),1)
