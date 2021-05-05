@@ -30,23 +30,23 @@ endif
 
 
 ifeq ($(LANG),SPA)
-	EE_CFLAGS += -DLANG_SPA
+	echo "#define LANG_SPA">>macro_vault.h
 endif
 ifeq ($(LANG),ENG)
-	EE_CFLAGS += -DLANG_ENG
+	echo "#define LANG_ENG">>macro_vault.h
 endif
 
 ifeq ($(TMANIP),1)
-EE_CFLAGS += -DTMANIP
+echo "#define TMANIP">>macro_vault.h
 endif
 
 ifeq ($(TMANIP),2)
 EE_CFLAGS += -DTMANIP
-EE_CFLAGS += -DTMANIP_MORON
+echo "#define TMANIP_MORON">>macro_vault.h
 endif
 
 ifeq ($(DEFAULT_COLORS),1)
-EE_CFLAGS += -DDEFAULT_COLORS
+@echo using default colors
 else
 EE_CFLAGS += -DCUSTOM_COLORS
 endif
