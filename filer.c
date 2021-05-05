@@ -1362,10 +1362,10 @@ int menu(const char *path, FILEINFO *file)
 	menu_len = strlen(LNG(Get_Size)) > menu_len ? strlen(LNG(Get_Size)) : menu_len;
 	menu_len = strlen(LNG(mcPaste)) > menu_len ? strlen(LNG(mcPaste)) : menu_len;
 	menu_len = strlen(LNG(psuPaste)) > menu_len ? strlen(LNG(psuPaste)) : menu_len;
+        menu_len = strlen(LNG(time_manip)) > menu_len ? strlen(LNG(time_manip)) : menu_len;
 	menu_len = (strlen(LNG(Mount)) + 6) > menu_len ? (strlen(LNG(Mount)) + 6) : menu_len;
-	#ifdef TMANIP
-	menu_len = strlen(LNG(time_manip)) > menu_len ? strlen(LNG(time_manip)) : menu_len;
-	#endif //TMANIP
+	
+
 	int menu_ch_w = menu_len + 1;                                 //Total characters in longest menu string
 	int menu_ch_h = NUM_MENU;                                     //Total number of menu lines
 	int mSprite_Y1 = 64;                                          //Top edge of sprite
@@ -1392,7 +1392,7 @@ int menu(const char *path, FILEINFO *file)
 		enable[MOUNTVMC1] = FALSE;
 		enable[GETSIZE] = FALSE;
 	}
-#ifdef TMANIP
+//#ifdef TMANIP
 	if (                                                        //if
 	    (file->stats.AttrFile & sceMcFileAttrSubdir) &&         //pointing to a folder
 	    (strcmp(file->name, "..")) &&                           //it isnt the ".." option
@@ -1402,7 +1402,7 @@ int menu(const char *path, FILEINFO *file)
 	} else {
 		enable[TIMEMANIP] = FALSE;
 	} 
-#endif //TMANIP
+//#endif //TMANIP
 
 
 	if (write_disabled || menu_disabled) {
@@ -1737,7 +1737,7 @@ u64 getFileSize(const char *path, const FILEINFO *file)
 // path: mc0:/ or mc1:/
 // const FILEINFO *file = the FILEINFO struct for that save, however, this function only cares about folder name
 //_msg0 = pointer to msg0 to report what happened to the user (uLaunchELF only)
-#ifdef TMANIP
+//#ifdef TMANIP
 	void time_manip(const char *path, const FILEINFO *file, char **_msg0)
 	{
 		int rett;  //this var will be used to store the result of mcSetFileInfo()
@@ -1781,7 +1781,7 @@ u64 getFileSize(const char *path, const FILEINFO *file)
 	//endfunc time_manip
 	//--------------------------------------------------------------
 	//
-#endif //TMANIP
+//#endif //TMANIP
 int delete (const char *path, const FILEINFO *file)
 {
 	FILEINFO files[MAX_ENTRY];
@@ -3716,7 +3716,7 @@ int getFilePath(char *out, int cnfmode)
 					else if (ret == GETSIZE) {
 						submenu_func_GetSize(msg0, path, files);
 					}  //ends GETSIZE
-#ifdef TMANIP
+//#ifdef TMANIP
 					else if (ret == TIMEMANIP) {
 #ifdef TMANIP_MORON
 						sprintf(msg1, "\n\n %s  [%s]  ?\n", LNG(change_timestamp_of), HACK_FOLDER);
@@ -3730,7 +3730,7 @@ int getFilePath(char *out, int cnfmode)
 							browser_cd = TRUE;     //TEST
 						}
 					}
-#endif //TMANIP
+//#endif //TMANIP
 					
 					
 					
