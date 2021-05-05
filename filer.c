@@ -37,9 +37,7 @@ enum {
 	MOUNTVMC0,
 	MOUNTVMC1,
 	GETSIZE,
-	#ifdef TMANIP
 	TIMEMANIP,
-	#endif
 	NUM_MENU
 } R1_menu_enum;
 
