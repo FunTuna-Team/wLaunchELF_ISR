@@ -45,8 +45,39 @@ jobs:
         title: "Latest automated build"
         files: |
                *.ELF
+#######################################################
+   build-funtuna-release:
+    needs: [build]
+    runs-on: ubuntu-latest
+    container: ps2dev/ps2dev:v1.0
+    steps:
+    - name: Install dependencies
+      run: |
+        apk add build-base git zip
+    - uses: actions/checkout@v2
+    - run: |
+        git fetch --prune --unshallow
+    - name: Install ps2eth
+      run: |
+        git clone https://github.com/ps2dev/ps2eth.git
+        cd ps2eth && make clean all install
+    - name: Compile wLaunchELF
+      run: |
+        make TMANIP=2 FUNTUNA_RELEASE=1
+    - name: Get short SHA
+      id: slug
+      run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
+
+    - name: Upload artifacts
+      if: ${{ success() }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: wLaunchELF-moron-${{ steps.slug.outputs.sha8 }}
+        path: |
+              *.ELF
 ####################################################### 
   build-spanish:
+    needs: [build]
     runs-on: ubuntu-latest
     container: ps2dev/ps2dev:v1.0
     steps:

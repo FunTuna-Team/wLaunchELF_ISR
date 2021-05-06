@@ -2,9 +2,13 @@
 
 SMB = 0
 #set SMB to 1 to build uLe with smb support
-
+ifeq ($(FUNTUNA_RELEASE),1)
+EE_BIN = ULE-UNC.ELF
+EE_BIN_PKD = ULE.ELF
+else
 EE_BIN = BOOT-UNC.ELF
 EE_BIN_PKD = BOOT.ELF
+endif
 EE_OBJS = main.o pad.o config.o elf.o draw.o loader_elf.o filer.o \
 	poweroff_irx.o iomanx_irx.o filexio_irx.o ps2atad_irx.o ps2dev9_irx.o ps2ip_irx.o\
 	ps2smap_irx.o ps2hdd_irx.o ps2fs_irx.o ps2netfs_irx.o usbd_irx.o usbhdfsd_irx.o mcman_irx.o mcserv_irx.o\
