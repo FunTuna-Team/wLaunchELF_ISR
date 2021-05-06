@@ -47,7 +47,7 @@ jobs:
                *.ELF
 
 
-   build-funtuna-release:
+  build-funtuna-release:
     needs: [build]
     runs-on: ubuntu-latest
     container: ps2dev/ps2dev:v1.0
