@@ -46,7 +46,6 @@ jobs:
         files: |
                *.ELF
 
-#######################################################
 
    build-funtuna-release:
     needs: [build]
@@ -78,7 +77,6 @@ jobs:
         path: |
               *.ELF
 
-####################################################### 
 
   build-spanish:
     needs: [build]
