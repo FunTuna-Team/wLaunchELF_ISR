@@ -98,7 +98,8 @@ jobs:
         SCH=${GITHUB_SHA::7}
         echo "#include \"Lang/SPA.LNG\"">lang.h
         make TMANIP=1 
-        zip wLaunchELF-espanol-$SCH *.ELF
+        mv BOOT.ELF BOOT-SPA.ELF
+        mv BOOT-UNC.ELF BOOT-UNC-SPA.ELF
     - name: Get short SHA
       id: slug
       run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
@@ -109,7 +110,7 @@ jobs:
       with:
         name: wLaunchELF-spanish-${{ steps.slug.outputs.sha8 }}
         path: |
-              *.zip
+              *.ELF
     - name: Create release
       if: github.ref == 'refs/heads/master'
       uses: marvinpinto/action-automatic-releases@latest
@@ -118,5 +119,5 @@ jobs:
         automatic_release_tag: "español"
         title: "Ultima compilacion automatica"
         files: |
-               *.zip
+               *.ELF
                
