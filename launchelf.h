@@ -2,7 +2,7 @@
 #define LAUNCHELF_H
 
 
-#define HACK_FOLDER "BXEXEC-FUNTUNA"
+#define HACK_FOLDER "BOOT-OPENTUNA"
 
 #define ULE_VERSION "v4.43x_isr"
 //#ifndef ULE_VERDATE
